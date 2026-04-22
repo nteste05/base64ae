@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0 user-scalable=no">
+    
+    <link rel="canonical" href="https://nteste05.github.io/base64ae/" />
+    <link rel="icon" type="image/jpeg" href="base64ae-favicon.jpeg" sizes="32x32">
+    <link rel="apple-touch-icon" sizes="180x180" href="base64ae-favicon.jpeg">
+    <link rel="manifest" href="manifest.json">
+    
+    <title>Base64AE: Aplikasi konversi audio ke Base64 dan sebaliknya</title>
+    <meta name="description" content="Konversi audio ke Base64 & sebaliknya dengan Base64AE. Cepat, aman, tanpa upload, dan gratis di browser. Solusi instan untuk developer & web integrasi!">
+    <meta name="keywords" content="Base64AE, Konversi audio ke Base64, Base64 to audio Converter, audio Encoder Base64, audio Decoder Base64">
+    <meta name="robots" content="index, follow">
+    
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://nteste05.github.io/base64ae">
+    <meta property="og:title" content="Base64IE: Aplikasi konversi audio ke Base64 dan sebaliknya">
+    <meta property="og:description" content="Konversi audio ke Base64 & sebaliknya dengan Base64AE. Cepat, aman, tanpa upload, dan gratis di browser. Solusi instan untuk developer & web integrasi!">
+    <meta property="og:image" content="https://raw.githubusercontent.com/nteste05/base64ae/refs/heads/main/base64ae-thumb.jpeg">
+    
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://nteste05.github.io/base64ae">
+    <meta property="twitter:title" content="Base64IE: Aplikasi konversi audio ke Base64 dan sebaliknya">
+    <meta property="twitter:description" content="Konversi audio ke Base64 & sebaliknya dengan Base64AE. Cepat, aman, tanpa upload, dan gratis di browser. Solusi instan untuk developer & web integrasi!">
+    <meta property="twitter:image" content="https://raw.githubusercontent.com/nteste05/base64ae/refs/heads/main/base64ae-thumb.jpeg">
+    
+    <style>
+        :root { --primary: #007bff; --success: #28a745; --bg: #f8f9fa; }
+        * {
+            box-sizing: border-box;
+        }
+        body { font-family: -apple-system, sans-serif; background: var(--bg); margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center;}
+        .container { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 100%; max-width: 500px; }
+        h2 { text-align: center; color: #333; margin-top: 0; }
+        .section { margin-bottom: 30px; padding: 15px; border: 1px solid #eee; border-radius: 8px; }
+        h3 { font-size: 1rem; margin-top: 0; color: #555; border-left: 4px solid var(--primary); padding-left: 10px; }
+        textarea { width: 100%; height: 120px; box-sizing: border-box; border: 1px solid #ddd; border-radius: 6px; padding: 10px; font-size: 12px; resize: none; margin: 10px 0; background: #fafafa; }
+        input[type="file"] { width: 100%; margin: 10px 0; }
+        .btn-group { display: flex; gap: 8px; flex-wrap: wrap; }
+        button { flex: 1; min-width: 120px; padding: 12px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; transition: 0.2s; color: white; }
+        .btn-blue { background: var(--primary); }
+        .btn-green { background: var(--success); }
+        .btn-copy { background: #6c757d; }
+        button:active { transform: scale(0.98); opacity: 0.9; }
+        
+        .navbar {
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            width: 100%;
+        }
+        
+        .menu-btn {
+            background: none;
+            border: none;
+            color: #bbb;
+            font-size: 24px;
+            cursor: pointer;
+            margin: 0 10px 0 0;
+        }
+        
+        header h1 {
+            font-size: 16px;
+            margin:0;
+            color: #555;
+        }
+        
+        .sidebar {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            z-index: 2000;
+            top: 0;
+            left: 0;
+            background-color: var(--bg);
+            overflow-x: hidden;
+            transition: 0.3s;
+            padding-top: 10px;
+        }
+        
+        .sidebar a {
+            padding: 15px 30px;
+            text-decoration: none;
+            font-size: 1.1rem;
+            color: #333;
+            display: flex;
+            align-items: center;
+            transition: 0.2s;
+            border-bottom: 1px solid #bbb;
+        }
+        
+        .sidebar a:hover {
+            color: #555;
+            background-color: #ccc;
+        }
+        
+        .sidebar .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 36px;
+            color: white;
+            cursor: pointer;
+        }
+        
+        .overlaynav {
+            display: none;
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background: rgba(0,0,0,0.7);
+            z-index: 1500;
+        }
+        
+        .visually-hidden {
+            position: absolute !important;
+            width: 1px !important;
+            height: 1px !important;
+            padding: 0 !important;
+            margin: -1px !important;
+            overflow: hidden !important;
+            clip: rect(0, 0, 0, 0) !important;
+            white-space: nowrap !important;
+            border: 0 !important;
+        }
+        
+        footer {
+            font-size: 12px;
+            padding: 10px;
+        }
+        
+        @media screen and (min-width: 769px) {.navbar {width: 55%}}
+    </style>
+</head>
+<body>
+    <div id="mySidebar" class="sidebar">
+        <span class="close-btn" onclick="closeNav()">&times;</span>
+        <a href="https://nteste05.github.io/gemii/" onclick="closeNav()">👽 Lainnya</a>
+        <a href="https://pinterest.com/nteste05" onclick="closeNav()"><img src="pinterest.svg" width="25" height="25" alt="pinterest"> Pinterest</a>
+        <a href="https://x.com/nteste05" onclick="closeNav()"><img src="x.svg" width="25" height="25" alt="x"> X</a>
+    </div>
+    <div id="overlaynav" class="overlaynav" onclick="closeNav()"></div>
+    <nav class="navbar">
+        <div class="menu-btn" onclick="openNav()">&#9776;</div>
+        <header><h1>Base64AE: Aplikasi konversi audio ke Base64 dan sebaliknya</h1></header>
+    </nav>
+    <div class="container">
+        <p><small>*) file tidak diupload ke server, semua proses terjadi di browser Anda.</small></p>
+        <div class="section">
+            <h3>1. Audio ➔ Kode</h3>
+            <input type="file" id="upAudio" accept="audio/*,.webm,.mp3,.wav">
+            <textarea id="txtOutput" readonly placeholder="Kode Base64 akan muncul di sini..."></textarea>
+            <button class="btn-copy" onclick="copyText()">Salin Kode</button>
+        </div>
+        <div class="section">
+            <h3>2. Kode ➔ Audio </h3>
+            <textarea id="txtInput" placeholder="Tempel kode Base64 di sini (diawali data:audio/...)"></textarea>
+            <div class="btn-group">
+                <button class="btn-blue" onclick="processDecode()">Putar Audio</button>
+                <button id="dlBtn" class="btn-green" style="display:none;" onclick="downloadAudio()">Download</button>
+            </div>
+             <video id="mediaPreview" controls style="width: 100%; border-radius: 8px; margin-top: 15px; display: none; border: 1px solid #ddd;"></video>
+        </div>
+    </div>
+<script>
+    document.getElementById('upAudio').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                document.getElementById('txtOutput').value = event.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+    
+    function copyText() {
+        const txt = document.getElementById('txtOutput');
+        const textToCopy = txt.value;
+        
+        if (navigator.clipboard && window.isSecureContext) {
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                alert("Semua teks berhasil disalin!");
+            }).catch(err => {
+                fallbackCopy(textToCopy);
+            });
+        } else {
+            fallbackCopy(textToCopy);
+        }
+    }
+    
+    function fallbackCopy(text) {
+        const textArea = document.createElement("textarea");
+        textArea.value = text;
+        textArea.style.position = "fixed";
+        textArea.style.left = "-9999px";
+        textArea.style.top = "0";
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        textArea.setSelectionRange(0, 999999);
+        
+        try {
+            const successful = document.execCommand('copy');
+            if (successful) {
+                alert("Semua teks berhasil disalin!");
+            } else {
+                alert("Gagal menyalin, silakan coba lagi.");
+            }
+        } catch (err) {
+            alert("Browser tidak mendukung penyalinan otomatis.");
+        }
+        document.body.removeChild(textArea);
+    }
+    
+    function processDecode() {
+        const code = document.getElementById('txtInput').value.trim();
+        const media = document.getElementById('mediaPreview');
+        const dlBtn = document.getElementById('dlBtn');
+        if (code.startsWith('data:audio/') || code.startsWith('data:video/webm')) {
+            media.src = code;
+            media.style.display = 'block';
+            media.play();
+            dlBtn.style.display = 'inline-block';
+        } else {
+            alert("Kode tidak valid! Pastikan diawali dengan 'data:audio/...'");
+        }
+    }
+    
+    function downloadAudio() {
+        const code = document.getElementById('mediaPreview').src;
+        if (!code) return;
+        
+        let extension = 'mp3';
+        if (code.startsWith('data:audio/')) {
+            let mimeType = code.split(';')[0].split('/')[1];
+            extension = (mimeType === 'mpeg') ? 'mp3' : mimeType;
+        } else if (code.startsWith('data:video/webm')) {
+            extension = 'webm';
+        }
+        
+        const link = document.createElement('a');
+        link.href = code;
+        link.download = `hasil-Base64AE.${extension}`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+    
+    const sidebar = document.getElementById("mySidebar");
+    const overlaynav = document.getElementById("overlaynav");
+    
+    function openNav() {
+        sidebar.style.width = "280px";
+        overlaynav.style.display = "block";
+            document.body.style.overflow = "hidden";
+    }
+    
+    function closeNav() {
+        sidebar.style.width = "0";
+        overlaynav.style.display = "none";
+        document.body.style.overflow = "auto";
+    }
+</script>
+<footer>
+    <p>&copy; 2026 <a style="color: inherit; text-decoration: none;" href="https://nteste05.github.io/base64ae/">Base64IE: Aplikasi konversi audio ke kode teks di Browser.</a> All Rights Reserved.</p>
+    <p class="visually-hidden">Base64AE: Solusi Cepat Konversi Audio ke Base64 Langsung di Browser<br><br>Di era pengembangan aplikasi web dan integrasi API yang semakin kompleks, efisiensi dalam mengelola aset digital menjadi kunci utama. Seringkali, developer dan konten kreator membutuhkan cara praktis untuk menyisipkan file suara tanpa harus bergantung pada penyimpanan file eksternal yang rumit. <strong>Base64AE</strong> hadir sebagai aplikasi berbasis web yang revolusioner untuk membantu Anda melakukan konversi audio ke Base64 dan sebaliknya dengan instan, aman, dan tanpa biaya.</p>
+    <p class="visually-hidden">Apa Itu Base64AE?<br>Base64AE adalah alat utilitas digital yang dirancang khusus untuk mengubah file audio (seperti MP3, WAV, OGG) menjadi format teks Base64. Tidak hanya itu, aplikasi ini juga berfungsi secara dua arah, memungkinkan Anda mengubah string kode Base64 kembali menjadi file audio yang dapat diputar atau diunduh. Semua proses dilakukan langsung di dalam browser Anda, yang berarti tidak ada data yang diunggah ke server, menjamin privasi dan keamanan data Anda tetap terjaga 100%.</p>
+    <p class="visually-hidden">Mengapa Anda Membutuhkan <strong>Konversi Audio ke Base64</strong>?<br>Penggunaan Base64 dalam dunia pemrograman dan desain web memiliki banyak keuntungan, di antaranya:<br>Embedding Langsung: Anda bisa menyisipkan file audio langsung ke dalam file HTML atau CSS tanpa perlu memanggil URL file eksternal. Ini sangat membantu untuk mengurangi jumlah HTTP requests.<br>Transfer Data API: Banyak API modern memerlukan data biner (seperti audio) untuk dikirimkan dalam format string teks agar kompatibel dengan JSON.<br>Penyimpanan Database: Memudahkan penyimpanan cuplikan audio pendek langsung ke dalam kolom teks pada database.<br>Keamanan Data: Memastikan aset audio Anda terintegrasi langsung dalam skrip aplikasi, mengurangi risiko link rusak atau broken paths.</p>
+    <p class="visually-hidden">Fitur Unggulan Base64AE<br>Antarmuka User-Friendly: Desain yang bersih dan intuitif memastikan siapa pun, mulai dari pemula hingga profesional, dapat menggunakan Base64AE tanpa hambatan.<br>Proses Real-Time: Begitu Anda memasukkan file atau kode, Base64AE akan memprosesnya dalam hitungan detik.<br>Mendukung Berbagai Format: Baik itu MP3 untuk musik, WAV untuk kualitas tinggi, atau OGG, Base64AE menangani berbagai ekstensi audio populer.<br>Tanpa Instalasi: Sebagai aplikasi berbasis browser, Anda tidak perlu mengunduh software tambahan. Cukup buka Base64AE di Chrome, Firefox, atau Safari, dan mulai bekerja.<br>Pratinjau Audio (Audio Player): Setelah melakukan konversi dari Base64 kembali ke audio, Anda dapat langsung mendengarkan hasilnya melalui pemutar audio terintegrasi sebelum mengunduhnya.</p>
+    <p class="visually-hidden">Cara Menggunakan Base64AE<br>Menggunakan Base64AE sangatlah mudah:<br>Audio ke Base64: Pilih file audio dari perangkat Anda, konversi otomatis, dan salin string teks yang dihasilkan untuk digunakan dalam kode proyek Anda.<br>Base64 ke Audio: Tempelkan string Base64 ke kolom yang tersedia, dan klik tombol Putar Audio. Base64AE akan secara otomatis memunculkan kontrol audio agar Anda bisa menyimpannya kembali sebagai file fisik.</p>
+    <p class="visually-hidden">Base64AE adalah alat esensial bagi web developer, mobile developer, dan tech enthusiast yang menginginkan fleksibilitas dalam mengelola file audio. Dengan performa yang ringan dan fokus pada privasi pengguna, Base64AE menjadi standar baru dalam <strong>aplikasi konversi audio di browser</strong>.<br>Optimalkan alur kerja digital Anda sekarang. Gunakan Base64AE untuk solusi konversi audio ke teks yang cepat, akurat, dan andal!</p>
+</footer>
+</body>
+</html>
